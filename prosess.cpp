@@ -3,15 +3,21 @@
 #include "rect.h"
 #include "circle.h"
 #include"ellipse.h"
+#include "line.h"
+#include "polygon.h"
+#include "polyline.h"
+#include "scatter.h"
+#include "scatterline.h"
 #include <vector>
 #include <fstream>
 #include <string>
 #include <typeinfo>
+#include <iomanip>
 using namespace std;
 
 int enterChois()
 {
-	cout << "1-create  2-erase  3-erase all  4-list  5-export  6-exit" << endl;
+	cout << "1-create  2-erase  3-erase all  4-list  5-export  6-animation  7-animate list  8-erase animation  9-exit" << endl;
     int chose;
 	cin >> chose;
 	return chose;
@@ -19,7 +25,7 @@ int enterChois()
 void create(vector<shape *>&shape)
 {
 	cout << "which object do want to draw ?" << endl;
-	cout << "1-circle  2-rect  3-ellipse" << endl;
+	cout << "1-circle  2-rect  3-ellipse  4-line  5-polygon  6-polyline  7-scatter 8-scatter line" << endl;
 	int in;
 	cin >> in;
 	cout << "enter the object name :";
@@ -27,34 +33,39 @@ void create(vector<shape *>&shape)
 	cin >> name;
 	if (in == 1)
 		shape.push_back(new circle(name));
-	if (in == 2)
+	else if (in == 2)
 		shape.push_back(new rect(name));
-	if (in == 3)
+	else if (in == 3)
 		shape.push_back(new ellipse(name));
+	else if (in == 4)
+		shape.push_back(new line(name));
+	else if (in == 5)
+		shape.push_back(new polygon(name));
+	else if (in == 6)
+		shape.push_back(new polyline(name));
+	else if (in == 7)
+		shape.push_back(new scatter(name));
+	else if (in == 8)
+		shape.push_back(new scatterline(name));
 	shape[shape::Count]->create();
 }
-void list(const vector<shape *>&shap)
+void list(const vector<shape *>&shape)
 {
-	for (int i = 0; i < shap.size(); i++)
+	for (int i = 0; i < shape.size(); i++)
 	{
-		cout << "name : ";
-		shap[i]->sayName();
-		cout << " , type : " << typeid(*shap[i]).name() << endl;
+		cout << i + 1 << "- name : ";
+		cout << shape[i]->sayName();
+		cout << " , type : " << typeid(*shape[i]).name() << endl;
 	}
 }
 void erase(vector<shape *>&shape)
 {
-	int i = 0;
 	list(shape);
-	cout << "which object do want to delete : ";
-	string name;
-	cin >> name;
-	for (i; i < shape.size(); i++) {
-		if (name == (shape[i]->sayName()))
-			break;
-	}
-	for (i; i < shape.size(); i++) {
-		shape[i] = shape[i + 1];
+	cout << "which object do want to delete plz enter the number : ";
+	int  numb;
+	cin >> numb;
+	for (numb-1; numb < shape.size(); numb++) {
+		shape[numb] = shape[numb + 1];
 	}
 	shape::Count -= 1;
 	shape.pop_back();
@@ -62,7 +73,7 @@ void erase(vector<shape *>&shape)
 void createFile(vector<shape *>&shape,fstream &pic)
 {
 	pic << setprecision(2) << fixed;
-	string write = "<?xml version=\"1.0\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \" -//W3C//DTD SVG 1.1//EN\"\n\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n<svg width=\"400\" height=\"400\"\nxmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">";
+	string write = "<?xml version=\"1.0\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \" -//W3C//DTD SVG 1.1//EN\"\n\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n<svg width=\"1000\" height=\"1000\"\nxmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">";
 	pic << write;
 	for (int i = 0; i < shape.size(); i++)
 		pic << shape[i]->Export();
@@ -83,7 +94,11 @@ void animate(vector<shape *>&shape)
 void animlist(vector<shape *>&shape)
 {
 	for (int i = 0; i < shape.size(); i++) {
-		cout << shape[i]->sayAnimatName() << endl;
+		string aname = shape[i]->sayAnimatName();
+		if (aname.empty() == false)
+			cout << i + 1 << " - " << shape[i]->sayAnimatName() << endl;
+		else
+			cout << i + 1 << " -  without animation " << endl;
 	}
 }
 void eraseanim(vector<shape *>&shape)
