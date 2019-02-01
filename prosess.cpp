@@ -69,3 +69,20 @@ void createFile(vector<shape *>&shape,fstream &pic)
 	pic << "\n</svg>";
 	cout << "export finish succefully" << endl;
 }
+void animate(vector<shape *>&shape)
+{
+	string name;
+	cout << "which object do you want to add animate : " << endl;
+	list(shape);
+	int numb;
+	cin >> numb;
+	cout << "and enter your animation name : ";
+	cin >> name;
+	shape[numb - 1]->animatation(name);
+}
+void animlist(vector<shape *>&shape)
+{
+	for (int i = 0; i < shape.size(); i++) {
+		cout << shape[i]->sayAnimatName() << endl;
+	}
+}
