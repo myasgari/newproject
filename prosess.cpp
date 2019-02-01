@@ -86,3 +86,11 @@ void animlist(vector<shape *>&shape)
 		cout << shape[i]->sayAnimatName() << endl;
 	}
 }
+void eraseanim(vector<shape *>&shape)
+{
+	int number;
+	cout << "which object do you want to erase : " << endl;
+	animlist(shape);
+	cin >> number;
+	shape[number - 1]->animOff();
+}
