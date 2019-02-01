@@ -12,6 +12,13 @@ void animlist(vector<shape *>&);
 void eraseanim(vector<shape *>&);
 int main()
 {
-
+	int choice;
+		fstream pic("pic.svg", ios::out);
+		if (!pic) {
+			cout << "file could not be open !!!";
+			exit ( EXIT_FAILURE );
+		}
+		vector<shape *>eraseVector;
+		vector<shape *>shape;
 	return 0;
 }
