@@ -1,9 +1,10 @@
 #include "rect.h"
 #include <string>
+#include <iostream>
 using namespace std;
 
 
-rect::rect(const string &name): Name(name)
+rect::rect(const string &name) : Name(name)
 {
 }
 rect::~rect()
@@ -22,4 +23,15 @@ string rect::Export()
 	}
 	write += " />";
 	return write;
+}
+string rect::get(const string &key)
+{
+	int i = 0;
+	for (i; i < atter.size(); i++)
+	{
+		string name = atter[i].key;
+		if (key == name)
+			break;
+	}
+	return atter[i].value;
 }

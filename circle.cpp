@@ -22,3 +22,14 @@ string circle::Export()
 	write += " />";
 	return write;
 }
+string circle::get(const string &key)
+{
+	int i = 0;
+	for (i; i < atter.size(); i++)
+	{
+		string name = atter[i].key;
+		if (key == name)
+			break;
+	}
+	return atter[i].value;
+}
