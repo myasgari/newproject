@@ -1,15 +1,14 @@
 #pragma once
-#pragma once
 #include "shape.h"
 #include <string>
-class ellipse :public shape
+class line:public shape
 {
 public:
-	ellipse(const std::string &);
+	line(const std::string &);
 	virtual std::string returnName() override;
 	virtual std::string Export() override;
-	virtual std::string get(const std::string &) override;
-	~ellipse();
+	virtual std::string get(const std::string &, const std::string & = "") override;
+	~line();
 private:
 	std::string Name;
 	std::string write;
