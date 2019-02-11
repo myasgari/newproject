@@ -52,7 +52,7 @@ string polygon::Export()
 	}
 	return write;
 }
-string polygon::get(const string &key)
+string polygon::get(const string &key,const string &key2)
 {
 	int i = 0;
 	for (i; i < atter.size(); i++)

@@ -51,7 +51,7 @@ string polyline::Export()
 	}
 	return write;
 }
-string polyline::get(const string &key)
+string polyline::get(const string &key,const string &key2)
 {
 	int i = 0;
 	for (i; i < atter.size(); i++)

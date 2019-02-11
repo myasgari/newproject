@@ -51,7 +51,7 @@ string line::Export()
 	}
 	return write;
 }
-string line::get(const string &key)
+string line::get(const string &key,const string &key2)
 {
 	int i = 0;
 	for (i; i < atter.size(); i++)

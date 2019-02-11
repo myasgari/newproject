@@ -1,24 +1,25 @@
-#include "circle.h"
+#include "rect.h"
 #include <string>
 #include <iostream>
 using namespace std;
-circle::circle()
+
+rect::rect()
 {}
-circle::circle(const string &name): Name(name)
+rect::rect(const string &name) : Name(name)
 {
 }
-circle::~circle()
+rect::~rect()
 {
 }
-string circle::returnName()
+string rect::returnName()
 {
 	return Name;
 }
-string circle::Export()
+string rect::Export()
 {
 	if (animationName.empty())
 	{
-		write += "\n<circle ";
+		write += "\n<rect ";
 		for (int i = 0; i < atter.size(); i++)
 		{
 			write += atter[i].key + "=\"" + atter[i].value + "\" ";
@@ -28,7 +29,7 @@ string circle::Export()
 	}
 	else
 	{
-		write += "\n<circle ";
+		write += "\n<rect ";
 		for (int i = 0; i < atter.size(); i++)
 		{
 			write += atter[i].key + "=\"" + atter[i].value + "\" ";
@@ -47,11 +48,11 @@ string circle::Export()
 			}
 			write += " />";
 		}
-		write += "\n </circle> ";
+		write += "\n </rect> ";
 	}
 	return write;
 }
-string circle::get(const string &key)
+string rect::get(const string &key,const string &key2)
 {
 	int i = 0;
 	for (i; i < atter.size(); i++)

@@ -53,7 +53,7 @@ string ellipse::Export()
 	}
 	return write;
 }
-string ellipse::get(const string &key)
+string ellipse::get(const string &key,const string &key2)
 {
 	int i = 0;
 	for (i; i < atter.size(); i++)
