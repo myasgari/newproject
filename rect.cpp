@@ -1,30 +1,57 @@
-#include "rect.h"
+#include "circle.h"
 #include <string>
 #include <iostream>
 using namespace std;
-
-
-rect::rect(const string &name) : Name(name)
+circle::circle()
+{}
+circle::circle(const string &name): Name(name)
 {
 }
-rect::~rect()
+circle::~circle()
 {
 }
-string rect::returnName()
+string circle::returnName()
 {
 	return Name;
 }
-string rect::Export()
+string circle::Export()
 {
-	write += "\n<rect ";
-	for (int i = 0; i < atter.size(); i++)
+	if (animationName.empty())
 	{
-		write += atter[i].key + "=\"" + atter[i].value + "\" ";
+		write += "\n<circle ";
+		for (int i = 0; i < atter.size(); i++)
+		{
+			write += atter[i].key + "=\"" + atter[i].value + "\" ";
+		}
+		write += " />";
+		return write;
 	}
-	write += " />";
+	else
+	{
+		write += "\n<circle ";
+		for (int i = 0; i < atter.size(); i++)
+		{
+			write += atter[i].key + "=\"" + atter[i].value + "\" ";
+		}
+		write += " >";
+		for (int i = 0; i < animationName.size(); i++)
+		{
+			string name = animationName[i];
+			write += "\n<animate attributeType=\"XML\" ";
+			for (int j = 0; j < animation.size(); j++)
+			{
+				if (name == animation[j].name)
+				{
+					write += animation[j].key + "=\"" + animation[j].value + "\" ";
+				}
+			}
+			write += " />";
+		}
+		write += "\n </circle> ";
+	}
 	return write;
 }
-string rect::get(const string &key)
+string circle::get(const string &key)
 {
 	int i = 0;
 	for (i; i < atter.size(); i++)

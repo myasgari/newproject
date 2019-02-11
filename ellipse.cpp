@@ -18,12 +18,39 @@ string ellipse::returnName()
 }
 string ellipse::Export()
 {
-	write += "\n<ellipse ";
-	for (int i = 0; i < atter.size(); i++)
+	if (animationName.empty())
 	{
-		write += atter[i].key + "=\"" + atter[i].value + "\" ";
+		write += "\n<ellipse ";
+		for (int i = 0; i < atter.size(); i++)
+		{
+			write += atter[i].key + "=\"" + atter[i].value + "\" ";
+		}
+		write += " />";
+		return write;
 	}
-	write += " />";
+	else
+	{
+		write += "\n<ellipse ";
+		for (int i = 0; i < atter.size(); i++)
+		{
+			write += atter[i].key + "=\"" + atter[i].value + "\" ";
+		}
+		write += " >";
+		for (int i = 0; i < animationName.size(); i++)
+		{
+			string name = animationName[i];
+			write += "\n<animate attributeType=\"XML\" ";
+			for (int j = 0; j < animation.size(); j++)
+			{
+				if (name == animation[j].name)
+				{
+					write += animation[j].key + "=\"" + animation[j].value + "\" ";
+				}
+			}
+			write += " />";
+		}
+		write += "\n </ellipse> ";
+	}
 	return write;
 }
 string ellipse::get(const string &key)

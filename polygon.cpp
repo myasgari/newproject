@@ -17,12 +17,39 @@ string polygon::returnName()
 }
 string polygon::Export()
 {
-	write += "\n<polygon ";
-	for (int i = 0; i < atter.size(); i++)
+	if (animationName.empty())
 	{
-		write += atter[i].key + "=\"" + atter[i].value + "\" ";
+		write += "\n<polygon ";
+		for (int i = 0; i < atter.size(); i++)
+		{
+			write += atter[i].key + "=\"" + atter[i].value + "\" ";
+		}
+		write += " />";
+		return write;
 	}
-	write += " />";
+	else
+	{
+		write += "\n<polygon ";
+		for (int i = 0; i < atter.size(); i++)
+		{
+			write += atter[i].key + "=\"" + atter[i].value + "\" ";
+		}
+		write += " >";
+		for (int i = 0; i < animationName.size(); i++)
+		{
+			string name = animationName[i];
+			write += "\n<animate attributeType=\"XML\" ";
+			for (int j = 0; j < animation.size(); j++)
+			{
+				if (name == animation[j].name)
+				{
+					write += animation[j].key + "=\"" + animation[j].value + "\" ";
+				}
+			}
+			write += " />";
+		}
+		write += "\n </polygon> ";
+	}
 	return write;
 }
 string polygon::get(const string &key)
