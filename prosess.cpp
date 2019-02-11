@@ -21,7 +21,7 @@ string width, height;
 void create(const string &, vector<shape *>&);
 void set(const string &, vector<shape *>&);
 void Export(vector<shape *>&, fstream &);
-void list(const vector<shape *>&);
+void list(const string &,const vector<shape *>&);
 void clear(const string &, vector<shape *>&);
 void getatt(const string &, vector<shape *>&);
 void clearall( vector<shape *>&);
@@ -48,7 +48,7 @@ void enterpross(const string &enter,vector<shape *>&shape,fstream &pic)
 	else if (enter.find("export") != string::npos)
 		Export(shape, pic);
 	else if (enter.find("list") != string::npos)
-		list(shape);
+		list(enter,shape);
 	else if (enter.find("clear all") != string::npos)
 		clearall(shape);
 	else if (enter.find("clear") != string::npos)
@@ -167,33 +167,82 @@ void Export(vector<shape *>&shape,fstream &pic)
 		pic << shape[i]->Export();
 	pic << "\n</svg>";
 }
-void list(const vector<shape *>&shape)
+void list(const string &enter,const vector<shape *>&shape)
 {
+	if (enter.find("animate") != string::npos)
+	{
+		int i = 0;
+		int pos = enter.find_last_of(" ");
+		string shapeName = enter.substr(pos + 1);
+		for (i; i < shape.size(); i++)
+		{
+			if (shapeName == shape[i]->returnName())
+				break;
+		}
+		for (int j = 0; j < shape[i]->animationName.size(); j++)
+		{
+			cout << shape[i]->animationName[j] << endl;
+		}
+	}
+	else
+	{
 		for (int i = 0; i < shape.size(); i++)
 		{
 			cout << i + 1 << "- name : ";
 			cout << shape[i]->returnName();
 			cout << " , type : " << typeid(*shape[i]).name() << endl;
 		}
+	}
 }
 void clear(const string &enter, vector<shape *>&shape)
 {
-	int i = 0;
-	for (i; i < shape.size(); i++)
+	int pos = enter.find('>');
+	if (pos == -1)
 	{
-		string clearName = enter.substr(6);
-		string name = shape[i]->returnName();
-		if (name == clearName)
-			break;
+		int i = 0;
+		for (i; i < shape.size(); i++)
+		{
+			string clearName = enter.substr(6);
+			string name = shape[i]->returnName();
+			if (name == clearName)
+				break;
+		}
+		for (i; i < shape.size() - 1; i++)
+		{
+			shape[i] = shape[i + 1];
+		}
+		shape.pop_back();
 	}
-	for (i; i < shape.size()-1; i++)
+	else
 	{
-		shape[i] = shape[i + 1];
+		int posi = enter.find_last_of('-');
+		string shapeName = enter.substr(6, posi - 6);
+		int i = 0;
+		int j = 0;
+		for (i; i < shape.size(); i++)
+		{
+			string name = shape[i]->returnName();
+			if (name == shapeName)
+				break;
+		}
+		int posit = enter.find_last_of('>');
+		string animName = enter.substr(posit + 1);
+		for (j; j < shape[i]->animationName.size(); j++)
+		{
+			if (animName == shape[i]->animationName[j])
+				break;
+		}
+		for (j; j < shape[i]->animationName.size() - 1; j++)
+		{
+			shape[i]->animationName[j] = shape[i]->animationName[j + 1];
+		}
+		shape[i]->animationName.pop_back();
 	}
-	shape.pop_back();
 }
 void getatt(const string &enter, vector<shape *>&shape)
 {
+	int f = enter.find('>');
+	int l = enter.find_last_of('>');
 	int i = 0;
 	for (i; i < shape.size(); i++)
 	{
@@ -201,10 +250,23 @@ void getatt(const string &enter, vector<shape *>&shape)
 		if (enter.find(name) != string::npos)
 			break;
 	}
-	int posion = enter.find_first_of('>');
-	string key = enter.substr(posion + 1);
-	key += " ";
-	cout << shape[i]->get(key) << endl;
+	if (f == l)
+	{
+		int posion = enter.find_first_of('>');
+		string key = enter.substr(posion + 1);
+		key += " ";
+		cout << shape[i]->get(key) << endl;
+	}
+	else
+	{
+		int x = enter.find('>');
+		int y = enter.find_last_of('-');
+		string shapeName = enter.substr(x + 1, y - x - 1);
+		int z = enter.find_last_of('>');
+		string key = enter.substr(z + 1);
+		key += " ";
+		cout << shape[i]->get(shapeName, key) << endl;
+	}
 }
 void clearall( vector<shape *>&shap)
 {
@@ -227,11 +289,14 @@ void animate(const string &enter, vector<shape *>&shape)
 	}
 	if (shape[i]->animationName.empty())
 		shape[i]->animationName.push_back(value);
-	for (j; j < shape[i]->animationName.size(); j++)
+	else
 	{
-		if (shape[i]->animationName[j] == value)
-			avilable = true;
+		for (j; j < shape[i]->animationName.size(); j++)
+		{
+			if (shape[i]->animationName[j] == value)
+				avilable = true;
+		}
+		if (avilable == false)
+			shape[i]->animationName.push_back(value);
 	}
-	if (avilable == false)
-		shape[i]->animationName.push_back(value);
 }
