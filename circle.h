@@ -7,7 +7,7 @@ public:
 	circle();
 	circle(const std::string &);
 	virtual std::string returnName() override;
-	virtual std::string Export() override ;
+	virtual std::string Export(std::vector<shape *>&) override ;
 	virtual std::string get(const std::string &, const std::string & = "") override;
 	~circle();
 private:
