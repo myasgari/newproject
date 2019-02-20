@@ -14,7 +14,7 @@ string line::returnName()
 {
 	return Name;
 }
-string line::Export()
+string line::Export(vector<shape *>&shape)
 {
 	if (animationName.empty())
 	{
@@ -53,12 +53,25 @@ string line::Export()
 }
 string line::get(const string &key,const string &key2)
 {
-	int i = 0;
-	for (i; i < atter.size(); i++)
+	if (key2.empty())
 	{
-		string name = atter[i].key;
-		if (key == name)
-			break;
+		int i = 0;
+		for (i; i < atter.size(); i++)
+		{
+			string name = atter[i].key;
+			if (key == name)
+				break;
+		}
+		return atter[i].value;
 	}
-	return atter[i].value;
+	else
+	{
+		int i = 0;
+		for (i; i < animation.size(); i++)
+		{
+			if (animation[i].name == key && animation[i].key == key2)
+				break;
+		}
+		return animation[i].value;
+	}
 }

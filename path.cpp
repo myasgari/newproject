@@ -60,7 +60,10 @@ string path::get(const std::string &key, const std::string & key2)
 			if (key == name)
 				break;
 		}
-		return atter[i].value;
+		if (i < atter.size())
+			return atter[i].value;
+		else
+			return "this attribute do not exit !!!";
 	}
 	else
 	{

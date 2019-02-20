@@ -20,11 +20,12 @@ string scatter::returnName()
 }
 string scatter::Export(vector<shape *>&shape)
 {
-/*	string fileName;
+	/*	string fileName;
 	string name = "C:\\Users\\Mehr\\Documents\\Visual Studio 2017\\Projects\\Project6\\data\\";*/
 	string type;
 	int i = 0;
 	float x, y;
+	float wMax = 0, hMax = 0;
 	atterb a;
 	int size;
 	fstream data("data.txt", ios::in);
@@ -32,24 +33,24 @@ string scatter::Export(vector<shape *>&shape)
 		cout << "file could not be open !!!";
 		exit(EXIT_FAILURE);
 	}
-/*	int j = 0;
+	/*	int j = 0;
 	for (j; j < atter.size(); j++)
 	{
-		if (atter[j].key == "data ")
-		{
-			fileName = atter[j].value;
-			break;
-		}
+	if (atter[j].key == "data ")
+	{
+	fileName = atter[j].value;
+	break;
+	}
 	}
 	for (j; j < atter.size() - 1; j++)
 	{
-		atter[j] = atter[j + 1];
+	atter[j] = atter[j + 1];
 	}
 	name += fileName;
 	fstream data(name, ios::in);
 	if (!data) {
-		cout << "file could not be open !!!";
-		exit(EXIT_FAILURE);
+	cout << "file could not be open !!!";
+	exit(EXIT_FAILURE);
 	}
 	*/
 	for (i; i < atter.size(); i++)
@@ -79,8 +80,12 @@ string scatter::Export(vector<shape *>&shape)
 		while (!data.eof())
 		{
 			data >> x >> y;
-			string name = "s"+std::to_string(counter);
-			shape.push_back(new circle (name));
+			if (x > wMax)
+				wMax = x;
+			if (y > hMax)
+				hMax = y;
+			string name = "s" + std::to_string(counter);
+			shape.push_back(new circle(name));
 			size = shape.size() - 1;
 			a.key = "fill ";
 			a.value = "blue";
@@ -97,34 +102,38 @@ string scatter::Export(vector<shape *>&shape)
 			counter++;
 		}
 	}
-		if (type == "line")
+	if (type == "line")
+	{
+		string value;
+		shape.push_back(new polyline("ch"));
+		size = shape.size() - 1;
+		a.key = "fill ";
+		a.value = "none";
+		shape[size]->atter.push_back(a);
+		a.key = "stroke ";
+		a.value = "orange";
+		shape[size]->atter.push_back(a);
+		a.key = "stroke-width ";
+		a.value = "3";
+		shape[size]->atter.push_back(a);
+		a.key = "points ";
+		while (!data.eof())
 		{
-			string value;
-			shape.push_back(new polyline("ch"));
-			size = shape.size() - 1;
-			a.key = "fill ";
-			a.value = "none";
-			shape[size]->atter.push_back(a);
-			a.key = "stroke ";
-			a.value = "orange";
-			shape[size]->atter.push_back(a);
-			a.key = "stroke-width ";
-			a.value = "3";
-			shape[size]->atter.push_back(a);
-			a.key = "points ";
-			while (!data.eof())
-			{
-				data >> x >> y;
-				value += std::to_string(x);
-				value += ",";
-				value += std::to_string(y) + " ";
-			}
-			a.value = value;
-			shape[size]->atter.push_back(a);
+			data >> x >> y;
+			if (x > wMax)
+				wMax = x;
+			if (y > hMax)
+				hMax = y;
+			value += std::to_string(x);
+			value += ",";
+			value += std::to_string(y) + " ";
 		}
-		data.clear();
-		data.seekg(0);
-		return write;
+		a.value = value;
+		shape[size]->atter.push_back(a);
+	}
+	data.clear();
+	data.seekg(0);
+	return write;
 }
 string scatter::get(const std::string &key, const std::string & key2)
 {

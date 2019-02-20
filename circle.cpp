@@ -14,7 +14,7 @@ string circle::returnName()
 {
 	return Name;
 }
-string circle::Export()
+string circle::Export(vector<shape *>&shape)
 {
 	if (animationName.empty())
 	{

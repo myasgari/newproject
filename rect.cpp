@@ -3,8 +3,7 @@
 #include <iostream>
 using namespace std;
 
-rect::rect()
-{}
+
 rect::rect(const string &name) : Name(name)
 {
 }
@@ -15,7 +14,7 @@ string rect::returnName()
 {
 	return Name;
 }
-string rect::Export()
+string rect::Export(vector<shape *>&shape)
 {
 	if (animationName.empty())
 	{
@@ -54,12 +53,25 @@ string rect::Export()
 }
 string rect::get(const string &key,const string &key2)
 {
-	int i = 0;
-	for (i; i < atter.size(); i++)
+	if (key2.empty())
 	{
-		string name = atter[i].key;
-		if (key == name)
-			break;
+		int i = 0;
+		for (i; i < atter.size(); i++)
+		{
+			string name = atter[i].key;
+			if (key == name)
+				break;
+		}
+		return atter[i].value;
 	}
-	return atter[i].value;
+	else
+	{
+		int i = 0;
+		for (i; i < animation.size(); i++)
+		{
+			if (animation[i].name == key && animation[i].key == key2)
+				break;
+		}
+		return animation[i].value;
+	}
 }
