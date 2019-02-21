@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "text.h"
 #include "circle.h"
 #include "polyline.h"
 #include "atterb.h"
@@ -20,19 +21,57 @@ string scatter::returnName()
 }
 string scatter::Export(vector<shape *>&shape)
 {
-	/*	string fileName;
+/*		string fileName;
 	string name = "C:\\Users\\Mehr\\Documents\\Visual Studio 2017\\Projects\\Project6\\data\\";*/
 	string type;
+	string title;
 	int i = 0;
 	float x, y;
-	float wMax = 0, hMax = 0;
+	int wMax = 0, hMax = 0;
 	atterb a;
+	float X, Y, H , W;
 	int size;
 	fstream data("data.txt", ios::in);
 	if (!data) {
 		cout << "file could not be open !!!";
 		exit(EXIT_FAILURE);
 	}
+	int find = 0;
+	for (find; find < atter.size(); find++)
+	{
+		if (atter[find].key == "title ")
+			break;
+	}
+	title = atter[find].value;
+	find = 0;
+	for (find; find < atter.size(); find++)
+	{
+	if (atter[find].key == "x ")
+	break;
+	}
+	X = std::stof(atter[find].value);
+	find = 0;
+	for (find; find < atter.size(); find++)
+	{
+	if (atter[find].key == "y ")
+	break;
+	}
+	Y = std::stof(atter[find].value);
+	find = 0;
+	for (find; find < atter.size(); find++)
+	{
+	if (atter[find].key == "width ")
+	break;
+	}
+	W = std::stof(atter[find].value);
+	find = 0;
+	for (find; find < atter.size(); find++)
+	{
+	if (atter[find].key == "height ")
+	break;
+	}
+	H = std::stof(atter[find].value);
+	write += "\n<text x=\"" + std::to_string(((W / 2) + X) -(title.size()*10)) + "\" y=\"" + std::to_string(Y - 10) + "\" font-family=\"Ubuntu\" font-size=\"35\">" + title + "</text>";
 	/*	int j = 0;
 	for (j; j < atter.size(); j++)
 	{
@@ -69,7 +108,7 @@ string scatter::Export(vector<shape *>&shape)
 	write += "\n<rect ";
 	for (int i = 0; i < atter.size(); i++)
 	{
-		if (atter[i].key == "type ")
+		if (atter[i].key == "type " || atter[i].key == "title ")
 			continue;
 		write += atter[i].key + "=\"" + atter[i].value + "\" ";
 	}
@@ -84,7 +123,7 @@ string scatter::Export(vector<shape *>&shape)
 				wMax = x;
 			if (y > hMax)
 				hMax = y;
-			string name = "s" + std::to_string(counter);
+			string name = "ch" + std::to_string(counter);
 			shape.push_back(new circle(name));
 			size = shape.size() - 1;
 			a.key = "fill ";
@@ -131,6 +170,10 @@ string scatter::Export(vector<shape *>&shape)
 		a.value = value;
 		shape[size]->atter.push_back(a);
 	}
+	write+= "\n<text x=\"" + std::to_string(X+W -(W*.1) ) + "\" y=\"" + std::to_string(Y+H +(H*.01)) + "\" font-family=\"Ubuntu\" font-size=\"40\">" + "|"+ "</text>";
+	write += "\n<text x=\"" + std::to_string(X + W - (W*.1))  + "\" y=\"" + std::to_string(Y + H + (H*.3)) + "\" font-family=\"Ubuntu\" font-size=\"20\">" + std::to_string(hMax) + "</text>";
+	write += "\n<text x=\"" + std::to_string(X-(X*.1)) + "\" y=\"" + std::to_string(Y+(Y*.1)) + "\" font-family=\"Ubuntu\" font-size=\"40\">" + "__" + "</text>";
+	write += "\n<text x=\"" + std::to_string(X - (X*.6)) + "\" y=\"" + std::to_string(Y + (Y*.2)) + "\" font-family=\"Ubuntu\" font-size=\"20\">" + std::to_string(wMax) + "</text>";
 	data.clear();
 	data.seekg(0);
 	return write;
