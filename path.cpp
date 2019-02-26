@@ -49,30 +49,3 @@ string path::Export(std::vector<shape *>&)
 	}
 	return write;
 }
-string path::get(const std::string &key, const std::string & key2)
-{
-	if (key2.empty())
-	{
-		int i = 0;
-		for (i; i < atter.size(); i++)
-		{
-			string name = atter[i].key;
-			if (key == name)
-				break;
-		}
-		if (i < atter.size())
-			return atter[i].value;
-		else
-			return "this attribute do not exit !!!";
-	}
-	else
-	{
-		int i = 0;
-		for (i; i < animation.size(); i++)
-		{
-			if (animation[i].name == key && animation[i].key == key2)
-				break;
-		}
-		return animation[i].value;
-	}
-}

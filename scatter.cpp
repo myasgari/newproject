@@ -27,7 +27,7 @@ string scatter::Export(vector<shape *>&shape)
 	string title;
 	int i = 0;
 	float x, y;
-	int wMax = 0, hMax = 0;
+	int wMax = 0, hMax =INT_MAX;
 	atterb a;
 	float X, Y, H , W;
 	int size;
@@ -121,7 +121,7 @@ string scatter::Export(vector<shape *>&shape)
 			data >> x >> y;
 			if (x > wMax)
 				wMax = x;
-			if (y > hMax)
+			if (y < hMax)
 				hMax = y;
 			string name = "ch" + std::to_string(counter);
 			shape.push_back(new circle(name));
@@ -161,7 +161,7 @@ string scatter::Export(vector<shape *>&shape)
 			data >> x >> y;
 			if (x > wMax)
 				wMax = x;
-			if (y > hMax)
+			if (y < hMax)
 				hMax = y;
 			value += std::to_string(x);
 			value += ",";
@@ -170,22 +170,11 @@ string scatter::Export(vector<shape *>&shape)
 		a.value = value;
 		shape[size]->atter.push_back(a);
 	}
-	write+= "\n<text x=\"" + std::to_string(X+W -(W*.1) ) + "\" y=\"" + std::to_string(Y+H +(H*.01)) + "\" font-family=\"Ubuntu\" font-size=\"40\">" + "|"+ "</text>";
-	write += "\n<text x=\"" + std::to_string(X + W - (W*.1))  + "\" y=\"" + std::to_string(Y + H + (H*.3)) + "\" font-family=\"Ubuntu\" font-size=\"20\">" + std::to_string(hMax) + "</text>";
-	write += "\n<text x=\"" + std::to_string(X-(X*.1)) + "\" y=\"" + std::to_string(Y+(Y*.1)) + "\" font-family=\"Ubuntu\" font-size=\"40\">" + "__" + "</text>";
-	write += "\n<text x=\"" + std::to_string(X - (X*.6)) + "\" y=\"" + std::to_string(Y + (Y*.2)) + "\" font-family=\"Ubuntu\" font-size=\"20\">" + std::to_string(wMax) + "</text>";
+	write+= "\n<text x=\"" + std::to_string(wMax ) + "\" y=\"" + std::to_string(Y+H +(H*.01)) + "\" font-family=\"Ubuntu\" font-size=\"40\">" + "|"+ "</text>";
+	write += "\n<text x=\"" + std::to_string(wMax)  + "\" y=\"" + std::to_string(Y + H + (H*.3)) + "\" font-family=\"Ubuntu\" font-size=\"20\">" + std::to_string(hMax) + "</text>";
+	write += "\n<text x=\"" + std::to_string(X-(X*.1)) + "\" y=\"" + std::to_string(hMax) + "\" font-family=\"Ubuntu\" font-size=\"40\">" + "__" + "</text>";
+	write += "\n<text x=\"" + std::to_string(X - (X*.6)) + "\" y=\"" + std::to_string(hMax) + "\" font-family=\"Ubuntu\" font-size=\"20\">" + std::to_string(wMax) + "</text>";
 	data.clear();
 	data.seekg(0);
 	return write;
-}
-string scatter::get(const std::string &key, const std::string & key2)
-{
-	int i = 0;
-	for (i; i < atter.size(); i++)
-	{
-		string name = atter[i].key;
-		if (key == name)
-			break;
-	}
-	return atter[i].value;
 }

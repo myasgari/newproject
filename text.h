@@ -1,13 +1,13 @@
 #pragma once
-#include "shape.h"
 #include <string>
-class line:public shape
+#include "shape.h"
+class text :public shape
 {
 public:
-	line(const std::string &);
+	text(const std::string &);
 	virtual std::string returnName() override;
 	virtual std::string Export(std::vector<shape *>&) override;
-	~line();
+	~text();
 private:
 	std::string Name;
 	std::string write;
