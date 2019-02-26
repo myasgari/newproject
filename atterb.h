@@ -1,10 +1,10 @@
 #pragma once
-#include "atterb.h"
-#include <vector>
-class shape
+#include <string>
+class atterb
 {
 public:
-	shape();
-	~shape();
-	std::vector<atterb *>atter;
+	atterb();
+	std::string key;
+	std::string value;
+	~atterb();
 };
