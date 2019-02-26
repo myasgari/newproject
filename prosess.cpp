@@ -65,7 +65,7 @@ void enterpross(const string &enter,vector<shape *>&shape)
 	else if (enter.find("load") != string::npos)
 		load(shape);
 	else
-		cout << "this  is not define\n";
+		cout << "this option is not define you should try again\n";
 }
 void create(const string &enter, vector<shape *>&shape)
 {
@@ -115,7 +115,7 @@ void create(const string &enter, vector<shape *>&shape)
 		shape.push_back(new path(name));
 	}
 	else
-		cout << "this shape is not define ";
+		cout << "this shape or object is not define ";
 }
 void set(const string &enter, vector<shape *>&shape)
 {
@@ -170,20 +170,20 @@ void set(const string &enter, vector<shape *>&shape)
 			if (shapeName == shape[i]->returnName())
 				break;
 		}
-		animation a;
-		int fa = enter.find('>');
-		int la = enter.find_last_of('-');
-		string name = enter.substr(fa + 1, la - fa - 1);
-		int fb = enter.find_last_of('>');
-		int lb = enter.find('(');
-		string key = enter.substr(fb + 1, lb - fb - 1);
-		int fc = enter.find('(');
-		int lc = enter.find_last_of(')');
-		string value = enter.substr(fc + 1, lc - fc - 1);
-		a.name = name;
-		a.key = key;
-		a.value = value;
-		shape[i]->animation.push_back(a);
+			animation a;
+			int fa = enter.find('>');
+			int la = enter.find_last_of('-');
+			string name = enter.substr(fa + 1, la - fa - 1);
+			int fb = enter.find_last_of('>');
+			int lb = enter.find('(');
+			string key = enter.substr(fb + 1, lb - fb - 1);
+			int fc = enter.find('(');
+			int lc = enter.find_last_of(')');
+			string value = enter.substr(fc + 1, lc - fc - 1);
+			a.name = name;
+			a.key = key;
+			a.value = value;
+			shape[i]->animation.push_back(a);
 	}
 }
 void Export(const string &enter,vector<shape *>&shape)
@@ -223,10 +223,15 @@ void list(const string &enter,const vector<shape *>&shape)
 			if (shapeName == shape[i]->returnName())
 				break;
 		}
-		for (int j = 0; j < shape[i]->animationName.size(); j++)
+		if (i < shape.size())
 		{
-			cout << shape[i]->animationName[j] << endl;
+			for (int j = 0; j < shape[i]->animationName.size(); j++)
+			{
+				cout << shape[i]->animationName[j] << endl;
+			}
 		}
+		else
+			cout << "the animation for this object is not define\n";
 	}
 	else
 	{
@@ -251,11 +256,16 @@ void clear(const string &enter, vector<shape *>&shape)
 			if (name == clearName)
 				break;
 		}
-		for (i; i < shape.size() - 1; i++)
+		if (i < shape.size())
 		{
-			shape[i] = shape[i + 1];
+			for (i; i < shape.size() - 1; i++)
+			{
+				shape[i] = shape[i + 1];
+			}
+			shape.pop_back();
 		}
-		shape.pop_back();
+		else
+			cout << "this object is not Available\n";
 	}
 	else
 	{
@@ -269,18 +279,28 @@ void clear(const string &enter, vector<shape *>&shape)
 			if (name == shapeName)
 				break;
 		}
-		int posit = enter.find_last_of('>');
-		string animName = enter.substr(posit + 1);
-		for (j; j < shape[i]->animationName.size(); j++)
+		if (i < shape.size())
 		{
-			if (animName == shape[i]->animationName[j])
-				break;
+			int posit = enter.find_last_of('>');
+			string animName = enter.substr(posit + 1);
+			for (j; j < shape[i]->animationName.size(); j++)
+			{
+				if (animName == shape[i]->animationName[j])
+					break;
+			}
+			if (j < shape[i]->animationName.size())
+			{
+				for (j; j < shape[i]->animationName.size() - 1; j++)
+				{
+					shape[i]->animationName[j] = shape[i]->animationName[j + 1];
+				}
+				shape[i]->animationName.pop_back();
+			}
+			else
+				cout << "this animation for this object is not Available\n";
 		}
-		for (j; j < shape[i]->animationName.size() - 1; j++)
-		{
-			shape[i]->animationName[j] = shape[i]->animationName[j + 1];
-		}
-		shape[i]->animationName.pop_back();
+		else
+			cout << "this object is not Available\n";
 	}
 }
 void getatt(const string &enter, vector<shape *>&shape)
@@ -294,26 +314,35 @@ void getatt(const string &enter, vector<shape *>&shape)
 		if (enter.find(name) != string::npos)
 			break;
 	}
-	if (f == l)
+	if (i < shape.size())
 	{
-		int posion = enter.find_first_of('>');
-		string key = enter.substr(posion + 1);
-		key += " ";
-		cout << shape[i]->get(key) << endl;
+		if (f == l)
+		{
+			int posion = enter.find_first_of('>');
+			string key = enter.substr(posion + 1);
+			key += " ";
+			cout << shape[i]->get(key) << endl;
+		}
+		else
+		{
+			int x = enter.find('>');
+			int y = enter.find_last_of('-');
+			string shapeName = enter.substr(x + 1, y - x - 1);
+			int z = enter.find_last_of('>');
+			string key = enter.substr(z + 1);
+			key += " ";
+			cout << shape[i]->get(shapeName, key) << endl;
+		}
 	}
 	else
-	{
-		int x = enter.find('>');
-		int y = enter.find_last_of('-');
-		string shapeName = enter.substr(x + 1, y - x - 1);
-		int z = enter.find_last_of('>');
-		string key = enter.substr(z + 1);
-		key += " ";
-		cout << shape[i]->get(shapeName, key) << endl;
-	}
+		cout << "this object is not Available\n";
 }
 void clearall( vector<shape *>&shap)
 {
+	for (int i = 0; i < shap.size(); i++)
+	{
+		delete shap[i];
+	}
 	vector<shape *>shape;
 	shap = shape;
 }
